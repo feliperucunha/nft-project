@@ -1,6 +1,11 @@
 import React from 'react'
+import { useAddress, useDisconnect, useMetamask } from '@thirdweb-dev/react'
 
 function NFTDropPage() {
+  const connectWithMetaMask = useMetamask()
+  const address = useAddress()
+  const disconnect = useDisconnect()
+
   return (
     <div className="flex h-screen flex-col lg:grid lg:grid-cols-10">
       <div className="bg-gradient-to-br from-cyan-800 to-rose-500 lg:col-span-4">
@@ -31,12 +36,19 @@ function NFTDropPage() {
             NFT Market Place
           </h1>
 
-          <button className="rounded-full bg-rose-400 px-4 py-2 text-xs font-bold text-white lg:px-5 lg:py-2.5 lg:text-base">
-            Sign In
+          <button
+            onClick={() => (address ? disconnect() : connectWithMetaMask())}
+            className={`rounded-full ${address ? 'bg-slate-700' : 'bg-rose-400'} px-4 py-2 text-xs font-bold text-white lg:px-5 lg:py-2.5 lg:text-base`}
+          >
+            {address ? 'Sign Out' : 'Sign In'}
           </button>
         </header>
 
         <hr className="my-2 border" />
+
+        {address && (
+          <p className='text-center text-sm text-rose-400'>You are logged in with wallet {address.substring(0,5)}...{address.substring(address.length - 5)}</p>
+        )}
 
         <div className="mt-10 flex flex-1 flex-col items-center space-y-6 text-center lg:justify-center lg:space-y-0">
           <img

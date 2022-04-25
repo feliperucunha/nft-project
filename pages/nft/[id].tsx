@@ -22,7 +22,7 @@ function NFTDropPage({ collection }: Props) {
           <div className="rounded-xl bg-gradient-to-br from-yellow-400 to-purple-600 p-2">
             <img
               className="w-44 rounded-xl object-cover lg:h-96 lg:w-72"
-              src={urlFor(collection.previewImage)}
+              src={`${urlFor(collection.previewImage)}`}
               alt="NFT Monkey"
             />
           </div>
@@ -64,7 +64,7 @@ function NFTDropPage({ collection }: Props) {
         <div className="mt-10 flex flex-1 flex-col items-center space-y-6 text-center lg:justify-center lg:space-y-0">
           <img
             className="w-80 object-cover pb-10 lg:h-40"
-            src={urlFor(collection.mainImage)}
+            src={`${urlFor(collection.mainImage)}`}
             alt="NFT Monkey Grid"
           />
 

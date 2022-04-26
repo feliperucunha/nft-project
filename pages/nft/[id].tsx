@@ -10,6 +10,7 @@ import { sanityClient, urlFor } from '../../sanity'
 import { Collection } from '../../typings'
 import Link from 'next/link'
 import { BigNumber } from 'ethers'
+import toast, { Toaster } from 'react-hot-toast'
 
 interface Props {
   collection: Collection
@@ -52,24 +53,62 @@ function NFTDropPage({ collection }: Props) {
     const quantity = 1;
 
     setLoading(true)
+    const notification = toast.loading('Minting NFT...', {
+      style: {
+        background: 'white',
+        color: 'green',
+        fontWeight: 'bolder',
+        fontSize: '17px',
+        padding: '20px'
+      }
+    })
 
     nftDrop.claimTo(address, quantity).then(async (transactionData) => {
       //TODO: show the data if succeded
       const receit = transactionData[0].receipt
       const claimedTokenId = transactionData[0].id
       const claimedNFT = await transactionData[0].data()
+
+      toast('Hell Yeah! Your NFT is Minted', {
+        duration: 8000,
+        style: {
+          background: 'green',
+          color: 'white',
+          fontWeight: 'bolder',
+          fontSize: '17px',
+          padding: '20px'
+        }
+      })
     }).catch(error => {
-      //TODO: implement a toaster or something for each error
-      alert('You aint got no money')
+      console.log(error)
+      toast('Whoops... Something went wrong', {
+        style: {
+          background: 'red',
+          color: 'white',
+          fontWeight: 'bolder',
+          fontSize: '17px',
+          padding: '20px'
+        }
+      })
+      toast('Maybe you aint got no money', {
+        style: {
+          background: 'red',
+          color: 'white',
+          fontWeight: 'bolder',
+          fontSize: '17px',
+          padding: '20px'
+        }
+      })
     }).finally(() => {
-      //TODO: show the bought message if succeded
       setLoading(false)
+      toast.dismiss(notification)
     })
 
   }
 
   return (
     <div className="flex h-screen flex-col lg:grid lg:grid-cols-10">
+      <Toaster position="bottom-center" />
       <div className="bg-gradient-to-br from-cyan-800 to-rose-500 lg:col-span-4">
         <div className="flex flex-col items-center justify-center py-2 lg:min-h-screen">
           <div className="rounded-xl bg-gradient-to-br from-yellow-400 to-purple-600 p-2">

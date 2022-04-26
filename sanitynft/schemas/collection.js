@@ -15,6 +15,11 @@ export default {
       type: 'string',
     },
     {
+      name: 'link',
+      title: 'Third Web Link',
+      type: 'string',
+    },
+    {
       name: 'nftCollectionName',
       title: 'Name of NFT Collection',
       type: 'string',

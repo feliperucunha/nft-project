@@ -12,16 +12,16 @@ const Home = ({ collections }: Props) => {
   return (
     <div className="mx-auto flex min-h-screen max-w-7xl flex-col py-20 px-10 2xl:px-0">
       <Head>
-        <title>NFT Project</title>
+        <title>New Age NFT | Home</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <h1 className="mb-10 text-4xl font-extralight">
         The{' '}
         <span className="font-extrabold underline decoration-pink-600/50">
-          New Age Apes
+          New Age NFT
         </span>{' '}
-        NFT Market Place
+        Market Place
       </h1>
 
       <main className="bg-slate-100 p-10 shadow-xl shadow-rose-400/20">
@@ -41,7 +41,7 @@ const Home = ({ collections }: Props) => {
                 <div className="p-4 pb-1">
                   <h2 className="text-2xl">{collection.title}</h2>
                 </div>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-400 pb-3">
                   {collection.description}
                 </p>
               </div>

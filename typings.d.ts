@@ -19,6 +19,7 @@ export interface Collection {
   id: string
   title: string
   description: string
+  link: string
   nftCollectionName: string
   address: string
   slug: {

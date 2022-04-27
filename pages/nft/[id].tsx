@@ -179,44 +179,91 @@ function NFTDropPage({ collection }: Props) {
         )}
 
         <div className="mt-10 flex flex-1 flex-col items-center space-y-6 text-center lg:justify-center lg:space-y-0">
-          <img
-            className="w-80 object-cover pb-10 lg:h-40"
-            src={`${urlFor(collection.mainImage)}`}
-            alt="NFT Monkey Grid"
-          />
+          {purchaseDone ? (
+            <Link href={collection.link}>
+              <a target="_blank">
+                <div className="group cursor-pointer overflow-hidden rounded-lg border bg-gradient-to-br from-yellow-400 to-purple-600 p-2">
+                  {/* the ! symbol protects from empty values */}
+                  <img
+                    className="mx-auto h-60 items-center"
+                    src={claimedNFT.metadata.image}
+                    alt={claimedNFT.metadata.name}
+                  />
+                  <div className="flex justify-between rounded-lg bg-white p-5">
+                    <div>
+                      <p className="p-2 text-lg font-bold">
+                        ({claimedNFT.metadata.name}){' '}
+                        <span className="text-green-400">Minted</span>
+                      </p>
+                      <p className="text-xs">
+                        {receit.from.substring(
+                          0,
+                          5
+                        )}
+                        ...
+                        {receit.from.substring(
+                          receit.from.length -
+                            5
+                        )}{' '}
+                        <span className="text-sm text-green-400">to</span>{' '}
+                        {receit.to.substring(
+                          0,
+                          5
+                        )}
+                        ...
+                        {receit.to.substring(
+                          receit.to.length -
+                            5
+                        )}
+                      </p>
+                    </div>
 
-          <Link href={collection.link}>
-            <a target="_blank">
-              <h1 className="animate-bounce cursor-pointer text-3xl font-bold underline decoration-blue-500/75 lg:text-5xl lg:font-extrabold">
-                {collection.title}
-              </h1>
-            </a>
-          </Link>
+                    <img
+                      className="h-12 w-12 rounded-full bg-gradient-to-br from-yellow-400 to-purple-600"
+                      src={urlFor(collection.mainImage).url()!}
+                      alt={collection.description}
+                    />
+                  </div>
+                </div>
+              </a>
+            </Link>
+          ) : (
+            <>
+              <img
+                className="w-80 object-cover pb-10 lg:h-40"
+                src={`${urlFor(collection.mainImage)}`}
+                alt="NFT Monkey Grid"
+              />
+
+              <Link href={collection.link}>
+                <a target="_blank">
+                  <h1 className="animate-bounce cursor-pointer text-3xl font-bold underline decoration-blue-500/75 lg:text-5xl lg:font-extrabold">
+                    {collection.title}
+                  </h1>
+                </a>
+              </Link>
+            </>
+          )}
 
           {loading ? (
             <img
               className="h-80 w-80 object-contain"
-              src="https://cdn.hackernoon.com/images/0*4Gzjgh9Y7Gu8KEtZ.gif"
+              src="/images/loading.gif"
               alt="Loading Symbol"
             />
-          ) : purchaseDone ? (
-            <div> 
-              <h2>{receit.from} -{'>'} {receit.to}</h2>
-              <h2>Blockhash: {receit.blockHash}</h2>
-              <h2>NFT Minted: {claimedNFT.metadata.name}</h2>
-              <img src={claimedNFT.metadata.image} alt={claimedNFT.metadata.name} />
-            </div>
           ) : (
             <>
               <p className="pt-2 text-xl text-green-500">
                 {claimedSupply} / {totalSupply?.toString()} NTF's claimed
               </p>
 
-              <div className="flex flex-col items-center w-full pt-2">
+              <div className="flex w-full flex-col items-center pt-2">
                 <button
                   onClick={mintNft}
                   disabled={
-                    loading || claimedSupply === totalSupply?.toNumber() || !address
+                    loading ||
+                    claimedSupply === totalSupply?.toNumber() ||
+                    !address
                   }
                   className="mt-5 h-16 w-full rounded-full bg-red-600 text-white transition-all duration-100 hover:scale-105 disabled:bg-gray-400"
                 >
@@ -227,16 +274,13 @@ function NFTDropPage({ collection }: Props) {
                   ) : !address ? (
                     <>Sign in to Mint</>
                   ) : (
-                    <span className="font-bold">
-                      Mint NFT ({price} ETH)
-                    </span>
+                    <span className="font-bold">Mint NFT ({price} ETH)</span>
                   )}
                 </button>
               </div>
             </>
           )}
         </div>
-
       </div>
     </div>
   )

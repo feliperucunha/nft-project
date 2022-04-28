@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { sanityClient, urlFor } from '../sanity'
 import { Collection } from '../typings'
+import Navbar from '../components/Navbar'
 
 interface Props {
   collections: Collection[]
@@ -16,13 +17,7 @@ const Home = ({ collections }: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className="mb-10 text-4xl font-extralight">
-        The{' '}
-        <span className="font-extrabold underline decoration-pink-600/50">
-          New Age NFT
-        </span>{' '}
-        Market Place
-      </h1>
+      <Navbar margin={true} />
 
       <main className="bg-slate-100 p-10 shadow-xl shadow-rose-400/20">
         <div className="grid space-x-3 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">

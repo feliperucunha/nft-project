@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { BigNumber } from 'ethers'
 import toast, { Toaster } from 'react-hot-toast'
 import Head from 'next/head'
+import Navbar from '../../components/Navbar'
 
 interface Props {
   collection: Collection
@@ -79,8 +80,6 @@ function NFTDropPage({ collection }: Props) {
 
         setReceit(newReceit)
         setClaimedNFT(newClaimedNFT)
-        console.log(newReceit)
-        console.log(newClaimedNFT)
 
         toast('Hell Yeah! Your NFT is Minted', {
           duration: 8000,
@@ -120,6 +119,24 @@ function NFTDropPage({ collection }: Props) {
       })
   }
 
+  const walletAbbreviation = (wallet: string) => {
+    return (
+      <>
+        {wallet.substring(0, 5)}
+        ...
+        {wallet.substring(wallet.length - 5)}
+      </>
+    )
+  }
+
+  const buttonText = () => {
+    if (loading) return <>Loading</>
+    if (claimedSupply === totalSupply?.toNumber()) return <>SOLD OUT</>
+    if (!address) return <>Sign in to Mint</>
+
+    return <span className="font-bold">Mint NFT ({price} ETH)</span>
+  }
+
   return (
     <div className="flex h-screen flex-col lg:grid lg:grid-cols-10">
       <Head>
@@ -149,13 +166,7 @@ function NFTDropPage({ collection }: Props) {
         <header className="flex items-center justify-between">
           <Link href={'/'}>
             <div className="transition-all duration-100 hover:scale-105">
-              <h1 className="w-52 cursor-pointer text-xl font-extralight sm:w-96">
-                The{' '}
-                <span className="font-extrabold underline decoration-pink-600/50">
-                  New Age NFT
-                </span>{' '}
-                Market Place
-              </h1>
+              <Navbar />
             </div>
           </Link>
 
@@ -165,7 +176,7 @@ function NFTDropPage({ collection }: Props) {
               address ? 'bg-slate-700' : 'bg-rose-400'
             } px-4 py-2 text-xs font-bold text-white transition-all duration-100 hover:scale-105 lg:px-5 lg:py-2.5 lg:text-base`}
           >
-            {address ? 'Sign Out' : 'Sign In'}
+            {address ? 'Sign Out' : 'Sign In on Metamask'}
           </button>
         </header>
 
@@ -173,8 +184,8 @@ function NFTDropPage({ collection }: Props) {
 
         {address && (
           <p className="text-center text-sm text-rose-400">
-            You are logged in with wallet {address.substring(0, 5)}...
-            {address.substring(address.length - 5)}
+            You are logged in on Metamask with wallet{' '}
+            {walletAbbreviation(address)}
           </p>
         )}
 
@@ -183,7 +194,6 @@ function NFTDropPage({ collection }: Props) {
             <Link href={collection.link}>
               <a target="_blank">
                 <div className="group cursor-pointer overflow-hidden rounded-lg border bg-gradient-to-br from-yellow-400 to-purple-600 p-2">
-                  {/* the ! symbol protects from empty values */}
                   <img
                     className="mx-auto h-60 items-center"
                     src={claimedNFT.metadata.image}
@@ -196,25 +206,9 @@ function NFTDropPage({ collection }: Props) {
                         <span className="text-green-400">Minted</span>
                       </p>
                       <p className="text-xs">
-                        {receit.from.substring(
-                          0,
-                          5
-                        )}
-                        ...
-                        {receit.from.substring(
-                          receit.from.length -
-                            5
-                        )}{' '}
+                        {walletAbbreviation(receit.from)}{' '}
                         <span className="text-sm text-green-400">to</span>{' '}
-                        {receit.to.substring(
-                          0,
-                          5
-                        )}
-                        ...
-                        {receit.to.substring(
-                          receit.to.length -
-                            5
-                        )}
+                        {walletAbbreviation(receit.to)}
                       </p>
                     </div>
 
@@ -267,15 +261,7 @@ function NFTDropPage({ collection }: Props) {
                   }
                   className="mt-5 h-16 w-full rounded-full bg-red-600 text-white transition-all duration-100 hover:scale-105 disabled:bg-gray-400"
                 >
-                  {loading ? (
-                    <>Loading</>
-                  ) : claimedSupply === totalSupply?.toNumber() ? (
-                    <>SOLD OUT</>
-                  ) : !address ? (
-                    <>Sign in to Mint</>
-                  ) : (
-                    <span className="font-bold">Mint NFT ({price} ETH)</span>
-                  )}
+                  {buttonText()}
                 </button>
               </div>
             </>
